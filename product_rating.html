@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Rating</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="card" style="padding: 2rem;">
+            <h2 style="color: var(--text-primary); margin-top: 0; margin-bottom: 1rem; border: 2px solid var(--primary-color); padding: 0.5rem 1rem; font-weight: bold; display: inline-block; border-radius: 8px; background-color: var(--card-background);">Ratings for: {{ product[0] }}</h2>
+            <p style="color: var(--text-secondary);">{{ product[1] }}</p>
+
+            <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.8rem; border: 2px solid var(--primary-color); padding: 0.4rem; font-weight: bold; display: inline-block; border-radius: 8px; background-color: var(--background-color);">Average Rating:</h3>
+            {% if avg_rating != "No genuine reviews yet" %}
+                {% set full_stars = avg_rating|int %}
+                {% set half_star = 1 if avg_rating - full_stars >= 0.5 else 0 %}
+                {% set empty_stars = 5 - full_stars - half_star %}
+                <p class="star-rating" style="margin-bottom: 1.5rem; font-size: 1.4em; color: var(--primary-color);">
+                    {{ '★' * full_stars }}{{ '⯪' if half_star else '' }}{{ '☆' * empty_stars }}
+                    ({{ avg_rating }}/5)
+                </p>
+            {% else %}
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">{{ avg_rating }}</p>
+            {% endif %}
+
+            <h3>Genuine Reviews:</h3>
+            {% if genuine_reviews %}
+                {% for review in genuine_reviews %}
+                    {% set full_stars = review.rating|int %}
+                    {% set half_star = 1 if review.rating - full_stars >= 0.5 else 0 %}
+                    {% set empty_stars = 5 - full_stars - half_star %}
+                    <div class="review-box" style="margin-bottom: 15px; padding: 10px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background-color: var(--background-color);">
+                        <p><strong>Rating:</strong> 
+                            <span class="star-rating">
+                                {{ '★' * full_stars }}{{ '⯪' if half_star else '' }}{{ '☆' * empty_stars }}
+                                ({{ review.rating }}/5)
+                            </span>
+                        </p>
+                        <p>{{ review.text }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No genuine reviews available.</p>
+            {% endif %}
+
+            <a href="{{ url_for('product_listing') }}" class="btn btn-primary">← Back to Products</a>
+        </div>
+    </div>
+</body>
+</html>

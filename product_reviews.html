@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Review Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="card" style="padding: 2rem;">
+            <h2 style="color: var(--text-primary); margin-top: 0; margin-bottom: 1rem; border: 2px solid var(--primary-color); padding: 0.5rem 1rem; font-weight: bold; display: inline-block; border-radius: 8px; background-color: var(--card-background);">Review Detection Results</h2>
+
+            <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.8rem; border: 2px solid var(--text-primary); padding: 0.4rem; font-weight: bold; border-radius: 8px; background-color: var(--card-background);">Genuine Reviews</h3>
+        {% if genuine_reviews %}
+                <ul style="list-style: disc; padding-left: 20px; margin-bottom: 1.5rem;">
+                {% for review in genuine_reviews %}
+                        <li style="margin-bottom: 0.8rem; line-height: 1.5; color: var(--text-primary);">{{ review }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">No genuine reviews found.</p>
+        {% endif %}
+
+            <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.8rem; border: 2px solid var(--text-primary); padding: 0.4rem; font-weight: bold; border-radius: 8px; background-color: var(--card-background);">Non-Genuine Reviews</h3>
+        {% if non_genuine_reviews %}
+                <ul style="list-style: disc; padding-left: 20px; margin-bottom: 1.5rem;">
+                {% for review in non_genuine_reviews %}
+                        <li style="margin-bottom: 0.8rem; line-height: 1.5; color: var(--text-primary);">{{ review }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">No non-genuine reviews found.</p>
+        {% endif %}
+
+            <p><a href="{{ url_for('product_listing') }}" class="btn btn-primary">← Back to Product Listing</a></p>
+        </div>
+    </div>
+</body>
+</html>

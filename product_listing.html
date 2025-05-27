@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Listing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Product Catalog</h1>
+            <nav class="nav-links">
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('purchase_history') }}">Purchase History</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="max-width: 1400px;">
+        <div class="product-grid" style="grid-template-columns: 1fr;">
+            {% for product in products %}
+            <div class="product-card" style="max-width: 1000px; margin-left: auto; margin-right: auto;">
+                <div class="product-header">
+                    <h2>{{ product[1] }}</h2>
+                    <span class="price">${{ product[3] }}</span>
+                </div>
+                
+                <p class="product-description">{{ product[2] }}</p>
+
+                <div class="product-actions" style="display: flex; gap: 1rem;">
+                    <form action="{{ url_for('product_rating', product_id=product[0]) }}" method="get" class="inline-form" style="display: inline;">
+                        <button type="submit" class="btn btn-secondary">⭐ View Ratings</button>
+                    </form>
+                    <form action="{{ url_for('purchase_product', product_id=product[0]) }}" method="POST" class="inline-form" style="display: inline;">
+                        <button type="submit" class="btn btn-primary">Purchase</button>
+                    </form>
+                </div>
+
+                <div class="reviews-section">
+                    <h3>Customer Reviews</h3>
+                    {% if product_reviews[product[0]] %}
+                        <div class="review-list">
+                            {% for review in product_reviews[product[0]] %}
+                                <div class="review-card" style="background: var(--background-color); border: 1px solid var(--border-color); border-radius: var(--radius-sm); margin-bottom: 0.75rem; padding: 0.75rem 1rem; width: 100%; min-width: 0;">
+                                    <div style="font-weight: 500; color: var(--text-primary); margin-bottom: 0.25em;">{{ review[1] }}</div>
+                                    <div class="review-text" style="color: var(--text-secondary); word-break: break-word;">{{ review[2] }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="no-reviews">No reviews yet.</p>
+                    {% endif %}
+
+                    <form action="{{ url_for('submit_review', product_id=product[0]) }}" method="POST" class="review-form">
+                        <div class="form-group">
+                            <textarea name="review_text" placeholder="Write your review here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+
+                    <form action="{{ url_for('detect_reviews', product_id=product[0]) }}" method="POST" class="inline-form">
+                        <button type="submit" class="btn btn-secondary">Analyze Reviews</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <style>
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .inline-form {
+            display: inline;
+        }
+
+        .reviews-section {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+
+        .review-list {
+            margin: 1rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .review-card {
+            background: var(--card-background);
+            padding: 1.2rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            flex: 0 0 280px;
+            max-width: 300px;
+            min-width: 250px;
+        }
+
+        .review-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .no-reviews {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .review-form {
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-actions {
+                flex-direction: column;
+            }
+
+            .product-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</body>
+</html>

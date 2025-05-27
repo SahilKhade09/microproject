@@ -1,0 +1,51 @@
+<!-- add_product.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Add New Product</h1>
+            <nav class="nav-links">
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('product_listing') }}">Product Listing</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <div class="card" style="max-width: 500px; margin: 2rem auto;">
+
+
+
+
+
+
+
+
+
+            <form action="{{ url_for('add_product') }}" method="POST">
+                <div class="form-group">
+                    <label for="product_name" class="form-label">Product Name</label>
+                    <input type="text" name="product_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="number" step="1" name="price" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" style="width: 100%;">Add Product</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
+

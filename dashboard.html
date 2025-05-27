@@ -1,0 +1,215 @@
+{# This is a test comment to verify file loading #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}?v={{ range(1, 10000) | random }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Shop and Review</h1>
+            <nav class="nav-links">
+                <!-- Removed Purchase History and Logout from nav -->
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h2>Welcome, {{ user[1] }}!</h2>
+                <p style="font-size: 1.15rem; color: var(--text-secondary); margin-top: 1rem;">Explore products, make purchases, and share your reviews with the community.</p>
+            </div>
+        </div>
+
+        <div class="dashboard-bottom-section">
+            <div class="dashboard-actions">
+                <div class="dashboard-actions" style="display: flex; flex-direction: row; gap: 1.5rem; flex-wrap: wrap; justify-content: center; flex-grow: 1; min-width: 320px; max-width: 600px;">
+                    <a href="{{ url_for('product_listing') }}" class="dashboard-cube-btn btn btn-primary">
+                        <span class="dashboard-cube-icon">🛒</span>
+                        <span class="dashboard-cube-label">Browse Products</span>
+                    </a>
+                    <a href="{{ url_for('purchase_history') }}" class="dashboard-cube-btn btn btn-secondary">
+                        <span class="dashboard-cube-icon">📦</span>
+                        <span class="dashboard-cube-label">Purchase History</span>
+                    </a>
+                    <a href="{{ url_for('add_product') }}" class="dashboard-cube-btn btn btn-secondary">
+                        <span class="dashboard-cube-icon">➕</span>
+                        <span class="dashboard-cube-label">Add Product</span>
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="dashboard-cube-btn btn btn-secondary">
+                        <span class="dashboard-cube-icon">🚪</span>
+                        <span class="dashboard-cube-label">Logout</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="dashboard-stats card">
+                <h4 style="margin-top: 0.5rem; margin-bottom: 1.2rem; font-size: 1.2rem; color: var(--text-primary); text-align: center;">Your Stats</h4>
+                <div style="display: flex; justify-content: space-around; align-items: center;">
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 600; color: var(--primary-color); text-align: center;">{{ purchase_count }}</div>
+                        <div style="font-size: 1rem; color: var(--text-secondary); text-align: center;">Products Purchased</div>
+                    </div>
+                    <div style="width: 2px; height: 50px; background: var(--border-color); flex-shrink: 0;"></div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 600; color: var(--primary-color); text-align: center;">{{ review_count }}</div>
+                        <div style="font-size: 1rem; color: var(--text-secondary); text-align: center;">Reviews Written</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        header h1 {
+            /* text-align: center; */ /* Leaving center but might not work due to HTML issues */
+            color: var(--text-primary); /* Use theme's primary text color */
+            border: 2px solid var(--primary-color); /* Add a border using theme color */
+            padding: 0.5rem 1rem; /* Add some padding around the text */
+            display: inline-block; /* Make it inline-block so border wraps content */
+            border-radius: 8px; /* Optional: Add rounded corners */
+            background-color: var(--card-background); /* Add subtle background color */
+        }
+        .dashboard-grid {
+            display: grid;
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .dashboard-card {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
+
+        .dashboard-card h2 {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-buttons .btn {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .dashboard-card {
+                padding: 1.5rem;
+            }
+        }
+
+        .dashboard-cube-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 140px;
+            height: 140px;
+            border-radius: 18px;
+            font-size: 1rem;
+            gap: 0.5em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: transform 0.12s, box-shadow 0.12s;
+            text-align: center;
+            padding: 0;
+        }
+        .dashboard-cube-btn:hover {
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+        }
+        .dashboard-cube-icon {
+            font-size: 2.1em;
+            margin-bottom: 0.2em;
+        }
+        .dashboard-cube-label {
+            font-size: 1.05em;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        /* Adjustments for the new layout */
+        @media (min-width: 768px) {
+            .dashboard-bottom-section {
+                display: flex;
+                flex-direction: row;
+                gap: 2rem;
+                margin-top: 2rem;
+                align-items: flex-start;
+                justify-content: space-between;
+            }
+            .dashboard-actions {
+                 display: flex;
+                 flex-direction: row;
+                 flex-wrap: nowrap;
+                 gap: 1.5rem;
+                 flex-grow: 0;
+                 flex-shrink: 0;
+                 flex-basis: auto;
+                 width: auto;
+            }
+             .dashboard-actions > .dashboard-cube-btn {
+                width: 140px;
+                height: 140px;
+                flex-shrink: 0;
+             }
+            .dashboard-stats.card {
+                flex: none;
+                min-width: 280px;
+                max-width: 300px;
+                flex-shrink: 0;
+                width: auto;
+                margin-right: 4rem;
+                border: 1px solid var(--text-primary);
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+            }
+        }
+
+         @media (max-width: 767px) {
+             .dashboard-bottom-section {
+                 flex-direction: column;
+                 align-items: center;
+                 gap: 2rem;
+                 margin-top: 2rem;
+             }
+             .dashboard-actions {
+                 flex-direction: row;
+                 flex-wrap: wrap;
+                 justify-content: center;
+                 gap: 1.5rem;
+                 width: 100%;
+                 max-width: 600px;
+             }
+             .dashboard-stats.card {
+                 max-width: 100%;
+                 margin-top: 2rem;
+                 padding-top: 1.5rem;
+                 padding-bottom: 1.5rem;
+             }
+         }
+
+    </style>
+</body>
+</html>
+

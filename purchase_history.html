@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Purchase History</h1>
+            <nav class="nav-links">
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <div class="card">
+            <h2>Your Purchases</h2>
+            <ul style="margin: 1.5rem 0;">
+                {% for purchase in purchases %}
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color); color: var(--text-secondary);">{{ purchase[0] }}</li>
+                {% else %}
+                    <li style="color: var(--text-secondary); font-style: italic;">No purchases found.</li>
+                {% endfor %}
+            </ul>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </main>
+</body>
+</html>
+
